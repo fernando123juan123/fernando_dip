@@ -1,0 +1,14 @@
+
+///CREAR PROYECTO
+> composer create-project --prefer-dist laravel/laravel fernando_dip "7"
+///INSTALAR DEPENDENCIA NPM
+>npm install
+///EJECUTAR PROYECTO
+> php artisan serve
+//CREAR CONTROLLADOR
+>php artisan make:Controller ControllerSistema
+///crear modelos
+> php artisan make:Model ModelPersona -m
+> php artisan make:Model ModelDocente -m
+///migrar las tablas bd
+>
