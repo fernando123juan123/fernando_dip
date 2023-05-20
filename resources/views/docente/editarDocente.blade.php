@@ -11,9 +11,12 @@
       <div class="card-body ">
         <a href="<?php echo route('sistema.index') ?>" class="btn btn-danger"> SALIR</a>
       
-          <form id="guardarNuevoPersona" method="post">
+          <form id="guardarEditarPersona" method="post">
             <div class="row">
               @csrf
+              <input type="hidden" name="idpersonas" value="<?php echo $obj->idpersonas ?>">
+              <input type="hidden" name="iddocentes" value="<?php echo $obj->id ?>">
+              <input type="hidden" name="do_imagen" value="<?php echo $obj->do_imagen ?>">
               <div class="col-lg-3">
                 <div class="form-group">
                   <label >CARNET :</label>
@@ -97,13 +100,13 @@
 
 <script>
 
-$("#guardarNuevoPersona").submit(function(event) {
+$("#guardarEditarPersona").submit(function(event) {
   event.preventDefault();
-  var formData=new FormData($("#guardarNuevoPersona")[0]);
+  var formData=new FormData($("#guardarEditarPersona")[0]);
 
   $.ajax({
-      url:'<?php echo route('sistema.guardarNuevoPersona') ?>',
-      type:'POST',
+      url:'<?php echo route('sistema.guardarEditarPersona') ?>',
+      type:'post',
       data:formData,
       cache:false,
       processData:false,

@@ -9,8 +9,8 @@
       </div>
       <div class="card-body">
         <a href="<?php echo route('sistema.nuevoDocente') ?>" class="btn btn-success"> NUEVO REGISTRO</a>
-        <a href="" target="_blank" class="btn btn-warning"> GENERAR REPORTE PDF</a>
-        <a href="" target="_blank" class="btn btn-info"> GENERAR REPORTE EXCEL</a>
+        <a href="<?php echo route('sistema.reportePdf')?>" target="_blank" class="btn btn-warning"> GENERAR REPORTE PDF</a>
+        <a href="<?php echo route('sistema.reporteExcel')?>" target="_blank" class="btn btn-info"> GENERAR REPORTE EXCEL</a>
         <div class="table-responsive">
           <table id="myTable" class="table table-border" style="width: 100%;" border="0">
             <thead>
@@ -49,16 +49,14 @@
                     <?php } ?>
                   </td>
                   <td>
-                    <a  class="btn btn-primary btn-round btn-sm" href="<?php echo route('sistema.editarDocente',$value->iddocentes) ?>"><i class="fa fa-edit"></i></a>
+                    <a  class="btn btn-primary btn-round btn-sm" href="<?php echo route('sistema.editarDocente',$value->id) ?>"><i class="fa fa-edit"></i></a>
+                    <a  class="btn btn-primary btn-round btn-sm" href="#" onclick="estado_doc('<?php echo $value->do_estado ?>','<?php echo $value->id ?>')"><i class="fa fa-pause"></i></a>
+
+                    <a  class="btn btn-primary btn-round btn-sm" href="#" onclick="eliminar_doc('<?php echo $value->id ?>')"><i class="fa fa-trash"></i></a>
+
+                   
+
                     
-                    <a href="" class="btn btn-primary btn-round btn-sm" title="CAMBIAR ESTADO"><i class="fa fa-pause"></i> </a>
-                    <form id="eliminar_doc" method="post">
-                      @method('PUT')
-                      @csrf
-                      <input type="hidden" name="idpersonas" value="<?php echo $value->idpersonas ?>">
-                      <input type="hidden" name="iddocentes" value="<?php echo $value->iddocentes ?>">
-                      <button type="submit"  class="btn btn-primary btn-round btn-sm"><i class="fa fa-trash"></i></button>
-                    </form>
                   </td>
                 </tr>  
               <?php } ?>            
@@ -70,11 +68,30 @@
   </div>
 
 <script>
-$("#eliminar_doc").submit(function(event) {
-  event.preventDefault();
-  var formData=new FormData($("#eliminar_doc")[0]);
-  alert()
-});
+
+function eliminar_doc(id){
+  alertify.confirm("<p>ESTA SEGURO QUE DESEA ELIMINAR?<br><br><b>ENTER</b> y <b>ESC</b> corresponden a <b>Aceptar</b> o <b>Cancelar</b></p>", function (e) {
+    if (e) {
+      $.post('<?php echo route('sistema.eliminar_doc') ?>', {id}, function() {
+        alertify.success("<b>Datos enviados...</b>"); 
+        alertify.alert("<b style='color: #008000;'>EXITOSAMENTE GUARDADOS</b> ", function () { 
+          window.location='';
+        }); 
+      });
+    } else { alertify.error("Has pulsado  cancel ");
+    }
+  }); 
+  return false
+
+}
+function estado_doc(do_estado,id){
+  $.post('<?php echo route('sistema.estado_doc') ?>', {do_estado,id}, function() {
+    alertify.success("<b>Datos enviados...</b>"); 
+    alertify.alert("<b style='color: #008000;'>EXITOSAMENTE GUARDADOS</b> ", function () { 
+      window.location='';
+    }); 
+  });
+}
 $(document).ready( function () {
     $('#myTable').DataTable();
 } );
